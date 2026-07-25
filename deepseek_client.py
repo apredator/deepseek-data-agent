@@ -17,27 +17,41 @@ class DeepSeekClient:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "deepseek-chat",
-        api_base: str = "https://api.deepseek.com/v1",
+        model: Optional[str] = None,
+        api_base: Optional[str] = None,
     ):
         """
         Initialize DeepSeek client
 
         Args:
             api_key: DeepSeek API key (defaults to DEEPSEEK_API_KEY env var)
-            model: Model name to use
-            api_base: API base URL
+            model: Model name to use (defaults to DEEPSEEK_MODEL env var)
+            api_base: API base URL (defaults to DEEPSEEK_API_BASE env var)
         """
+        # Load from environment with proper defaults
         self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY")
+        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-v4-flash")
+        self.api_base = api_base or os.getenv("DEEPSEEK_API_BASE", "https://api.deepseek.com/v1")
+        
         if not self.api_key:
             raise ValueError(
                 "DeepSeek API key not found. "
                 "Set DEEPSEEK_API_KEY environment variable."
             )
 
-        self.model = model
-        self.api_base = api_base
+        # Validate model name
+        valid_models = ["deepseek-v4-flash", "deepseek-v4-pro"]
+        if self.model not in valid_models:
+            print(f"⚠️  Warning: Model '{self.model}' may not be valid.")
+            print(f"   Valid models: {valid_models}")
+            print(f"   Proceeding with: {self.model}")
+
         self.messages: List[Dict[str, str]] = []
+        
+        if os.getenv("DEBUG") == "True":
+            print(f"[DEBUG] DeepSeekClient initialized:")
+            print(f"        Model: {self.model}")
+            print(f"        API Base: {self.api_base}")
 
     def add_message(self, role: str, content: str) -> None:
         """Add message to conversation history"""
