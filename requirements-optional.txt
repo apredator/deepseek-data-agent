@@ -1,0 +1,11 @@
+# Optional extras - the project runs fine without any of these.
+#
+#   pip install -r requirements-optional.txt
+#
+# sentence-transformers : real embeddings for semantic_tools.py
+#                         (the code falls back to difflib when it is absent)
+# datasets              : publish the synthetic dataset to the Hugging Face Hub
+# huggingface_hub       : upload helper used by publish_to_hf.py
+sentence-transformers>=2.5
+datasets>=2.18
+huggingface_hub>=0.23

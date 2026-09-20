@@ -33,6 +33,7 @@ venv/
 ENV/
 env/
 .venv
+.ci-venv/
 
 # IDEs
 .vscode/
@@ -62,6 +63,11 @@ analysis_results/
 .pytest_cache/
 .coverage
 htmlcov/
+__pycache__/
+
+# Internal working documents (not part of the public repo)
+*.docx
+TZ_*.md
 
 # OS
 .DS_Store
